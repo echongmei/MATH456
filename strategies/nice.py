@@ -10,6 +10,7 @@ class Nice():
         self.name = "nice"
         self.round = 0
         self.player_id = player_id
+        self.total_score = 0
     
     def strategy(self):
         """

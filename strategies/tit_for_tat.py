@@ -5,6 +5,7 @@ class Tit_for_tat():
         self.name = "tit_for_tat"
         self.round = 0
         self.player_id = player_id
+        self.total_score = 0
     
     def strategy(self, opponent):
         """

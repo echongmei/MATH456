@@ -4,6 +4,7 @@ class Reverse_tit_for_tat:
         self.name = "reverse_tit_for_tat"
         self.round = 0
         self.player_id = player_id
+        self.total_score = 0
     
     def strategy(self, opponent):
         """
