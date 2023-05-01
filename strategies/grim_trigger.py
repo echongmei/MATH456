@@ -17,7 +17,7 @@ class Grim_trigger():
         #first move will always be cooperate
         if len(self.history) == 0:
             return 0
-        #always defect the other agent defects
+        #always defect if the other agent defected before
         if sum(opponent.history) > 0:
             return 1
         return 0
