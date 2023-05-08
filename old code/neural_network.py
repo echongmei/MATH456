@@ -14,10 +14,10 @@ def generate_players(N : int) -> dict:
     if N <= 1:
         return '⊥' #error detected
     players = dict()   #players = {i: [class instance(i), attributes for this player]}
-    players[0] = Blind(0) # the single blind player -> will always be created
+   #  players[0] = Blind(0) # the single blind player -> will always be created
    #  print(players[0].history)
     for i in range(1, N):
-        strategy_val = random.randint(1, 6) 
+        strategy_val = random.randint(1, 2) 
         if strategy_val == 1: # grim trigger
             players[i] = Grim_trigger(i)
         if strategy_val == 2: # hard majority 
@@ -34,47 +34,46 @@ def generate_players(N : int) -> dict:
     return players
 
 def re_eval(round_moves, previous_moves, memory):
-    
     pass
-def correctness(guess, players, N):
-    number_correct = 0
-    for i in list(guess.keys()):
-        if guess[i] == players[i].name:
-            number_correct += 1
-    return round(float(number_correct/N), 5)
 
-def check_for_win(player, players, N):
-   #  print(N)
-    guess = {}
-    round_moves = {}
-    previous_moves = {}
-    for i in list(player.round_memory.keys()):
-      round_moves[i] = player.round_memory[i][-1]
-      previous_moves[i] = player.round_memory[i][:-1]
+# def correctness(guess, players, N):
+#     number_correct = 0
+#     for i in list(guess.keys()):
+#         if guess[i] == players[i].name:
+#             number_correct += 1
+#     return round(float(number_correct/N), 5)
+
+# def check_for_win(player, players, N):
+#     guess = {}
+#     round_moves = {}
+#     previous_moves = {}
+#     for i in list(player.round_memory.keys()):
+#       round_moves[i] = player.round_memory[i][-1]
+#       previous_moves[i] = player.round_memory[i][:-1]
       
    #  print(round_moves)
    #  print(previous_moves)
-    if player.round == 1:
-        for j in list(round_moves.keys()):
-            if round_moves[j] == 1:
-                options = ['Hard Majority', 'Mean', 'Reverse Tit for Tat']
-            elif round_moves[j] == 0:
-                options = ['Grim Trigger', 'Nice', 'Reverse Tit for Tat']
+   #  if player.round == 1:
+   #      for j in list(round_moves.keys()):
+   #          if round_moves[j] == 1:
+   #              options = ['Hard Majority', 'Mean', 'Reverse Tit for Tat']
+   #          elif round_moves[j] == 0:
+   #              options = ['Grim Trigger', 'Nice', 'Reverse Tit for Tat']
 
-            guess[j] = options[random.randint(0, len(options)-1)]
+   #          guess[j] = options[random.randint(0, len(options)-1)]
    #  elif player.round > 1:
    #      for k in list(round_moves.keys()):
    #          guess[k] = re_eval(round_moves[k], previous_moves[k], player.guess_memory)
 #             print(i)
 #             player.round_mem
-    percent_correct = correctness(guess, players, N)
-    guess['percent'] = percent_correct
-    player.guess_memory[player.round] = guess
-    print(player.guess_memory)
-    if percent_correct == round(float(1.0),5):
-        return True
-    else:
-        return False
+   #  percent_correct = correctness(guess, players, N)
+   #  guess['percent'] = percent_correct
+   #  player.guess_memory[player.round] = guess
+   #  print(player.guess_memory)
+   #  if percent_correct == round(float(1.0),5):
+   #      return True
+   #  else:
+   #      return False
 
    #  players[0].guess_memory[players[0].round] = guess
 
@@ -84,16 +83,16 @@ def check_for_win(player, players, N):
 def player_move(player, players: dict): 
     N = len(players)
     possible_moves = []
-    for id in range(0, N):
+    for id in range(1, N):
         if id != player.player_id:
             possible_moves.append(player.strategy(players[id]))
-            if id == 0:
+            # if id == 0:
                #  print(players[0].round_memory[players[0].round], player.player_id)
-                if player.player_id not in list(players[0].round_memory.keys()):
-                    players[0].round_memory[player.player_id] = [possible_moves[-1]]
-                  #   print(players[0].round_memory)
-                else:
-                    players[0].round_memory[player.player_id].append(possible_moves[-1])
+               #  if player.player_id not in list(players[0].round_memory.keys()):
+               #      players[0].round_memory[player.player_id] = [possible_moves[-1]]
+               #    #   print(players[0].round_memory)
+               #  else:
+               #      players[0].round_memory[player.player_id].append(possible_moves[-1])
     defects = len(list(filter(lambda x: x % 2 != 0, possible_moves)))
     cooperates = len(list(filter(lambda x: x % 2 == 0, possible_moves)))
     if defects > cooperates:
@@ -103,7 +102,7 @@ def player_move(player, players: dict):
     else:
         player.history.append(random.randint(0,1))
     player.round += 1
-    print(player.player_id, possible_moves)
+   #  print(player.player_id, possible_moves)
     return player
    #  pass 
 
@@ -112,15 +111,20 @@ def play_game(N: int):
     print(players)
     win_condition = False
     while not win_condition:
-        for i in range(0, N):
+        for i in range(1, N):
             # if i == 0:
                #  players[0].round_memory[players[0].round + 1] = {}
             players[i] = player_move(players[i], players)
-        
+
       #   win_condition = check_for_win(players[0], N)
-        if players[0].round >= 1:
-            print(check_for_win(players[0], players, N))
+        if players[i].round > 10:
+            
             win_condition = True
+        print(players[i].history)
+      #   if players[0].round >= 1:
+      #       print(vars(players[0]))
+      #       print(check_for_win(players[0], players, N))
+      #       win_condition = True
    #  print(players[0].round_memory)
    #  print(list(players[0].round_memory[1].keys())[1], list(players[0].round_memory[1].values())[1])
     return players
@@ -130,7 +134,7 @@ def play_game(N: int):
 # print(generate_players(20))
 
 
-print(play_game(5))
+print(play_game(4))
 # print(list([0]))
 # print(list([0])[:-1])
 

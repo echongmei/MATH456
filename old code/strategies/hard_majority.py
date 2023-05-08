@@ -36,8 +36,11 @@ class Hard_majority():
             return 1
         #always defect if the number of defections of the opponent is 
         # greater than or equal to the number of times it has cooperated
-        num_defected = sum(opponent.history)
-        num_cooperated = len(opponent.history) - num_defected
+        print(opponent.history)
+        num_cooperated = len(list(filter(lambda move: move == 0, opponent.history)))
+      #   print(num_cooperated)
+        num_defected = len(opponent.history) - num_cooperated
+        print(num_cooperated, num_defected)
         if num_defected >= num_cooperated:
             return 1
         return 0
