@@ -1,8 +1,5 @@
 # MATH456
 
-https://github.com/Axelrod-Python/Axelrod/blob/dev/axelrod/strategies/cooperator.py
-
-
 The prisoner’s dilemma is an extensively studied problem in game theory that models two rational
 agents that can either cooperate for their mutual benefit or can betray each other for a greater payoff.
 This problem is a classic model of cooperative decision making, and highlights the difference between
