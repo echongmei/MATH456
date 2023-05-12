@@ -1,5 +1,5 @@
 import sys
-
+import random
 
 
 class Grim_Trigger():
@@ -12,7 +12,7 @@ class Grim_Trigger():
       self.losses = 0
       
     def choose_action(self, opponent): #this is the players strategy
-       if (len(self.history)  == 0) or (self.round == 0):
+       if (len(self.history)  == 0):
           return 0
        elif sum(opponent.history) > 0:
           return 1
@@ -48,7 +48,8 @@ class Hard_Majority():
     def choose_action(self, opponent): #this is the players strategy
        opponent_cooperations = len(list(filter(lambda move: move == 0, opponent.history)))
        opponent_defections = len(opponent.history) - opponent_cooperations
-       if (len(self.history)  == 0) or (self.round == 0):
+      #  print('cooperations = {}  defections {}'.format(opponent_cooperations, opponent_defections))
+       if (len(self.history)  == 0):
           return 1
        elif opponent_defections >= opponent_cooperations:
           return 1
@@ -139,7 +140,7 @@ class Reverse_Tit_For_Tat():
       self.losses = 0
       
     def choose_action(self, opponent): #this is the players strategy
-       if (len(self.history)  == 0) or (self.round == 0):
+       if (len(self.history)  == 0):
           return 1
        elif opponent.history[-1] == 0:
           return 1
@@ -172,12 +173,12 @@ class Tit_For_Tat():
       self.losses = 0
       
     def choose_action(self, opponent): #this is the players strategy
-       if (len(self.history)  == 0) or (self.round == 0):
+       if (len(self.history)  == 0):
           return 0
-       elif opponent.history[-1] == 1:
-          return 1
+      #  elif opponent.history[-1] == 1:
+      #     return 0
        else:
-          return 0
+          return opponent.history[-1]
        
     def update_wins(self):
         self.wins += 1
