@@ -10,6 +10,7 @@ class Grim_Trigger():
       self.player_id = player_id
       self.wins = 0
       self.losses = 0
+      self.ties = 0
       
     def choose_action(self, opponent): #this is the players strategy
        if (len(self.history)  == 0):
@@ -24,7 +25,8 @@ class Grim_Trigger():
    
     def update_losses(self):
         self.losses += 1
- 
+    def update_ties(self):
+        self.ties += 1
     def analyze_outcome(self):
       percent_won = 0
       if self.wins > 0:
@@ -34,6 +36,13 @@ class Grim_Trigger():
          
         return self.wins, percent_won
       
+    def reset(self):
+        self.wins = 0
+        self.ties = 0
+        self.losses = 0
+        self.history = []
+      #   print(self.wins, self.losses, self.history, self.history)
+        return self
 
 
 class Hard_Majority():
@@ -44,6 +53,7 @@ class Hard_Majority():
       self.player_id = player_id
       self.wins = 0
       self.losses = 0
+      self.ties = 0
       
     def choose_action(self, opponent): #this is the players strategy
        opponent_cooperations = len(list(filter(lambda move: move == 0, opponent.history)))
@@ -61,7 +71,8 @@ class Hard_Majority():
    
     def update_losses(self):
         self.losses += 1
- 
+    def update_ties(self):
+        self.ties += 1
     def analyze_outcome(self):
       percent_won = 0
       if self.wins > 0:
@@ -70,7 +81,14 @@ class Hard_Majority():
         percent_won = 1 - float(self.losses / (self.wins + self.losses))
          
         return self.wins, percent_won
-
+      
+    def reset(self):
+        self.wins = 0
+        self.ties = 0
+        self.losses = 0
+        self.history = []
+      #   print(self.wins, self.losses, self.history, self.history)
+        return self
 
 class Mean():
     def __init__(self, player_id: int) -> None:
@@ -80,6 +98,7 @@ class Mean():
       self.player_id = player_id
       self.wins = 0
       self.losses = 0
+      self.ties = 0
       
     def choose_action(self, opponent): #this is the players strategy
           return 1
@@ -89,7 +108,8 @@ class Mean():
    
     def update_losses(self):
         self.losses += 1
- 
+    def update_ties(self):
+        self.ties += 1
     def analyze_outcome(self):
       percent_won = 0
       if self.wins > 0:
@@ -99,7 +119,13 @@ class Mean():
          
         return self.wins, percent_won
       
-
+    def reset(self):
+        self.wins = 0
+        self.ties = 0
+        self.losses = 0
+        self.history = []
+      #   print(self.wins, self.losses, self.history, self.history)
+        return self
 
 class Nice():
     def __init__(self, player_id: int) -> None:
@@ -109,6 +135,7 @@ class Nice():
       self.player_id = player_id
       self.wins = 0
       self.losses = 0
+      self.ties = 0
       
     def choose_action(self, opponent): #this is the players strategy
           return 0
@@ -118,7 +145,8 @@ class Nice():
    
     def update_losses(self):
         self.losses += 1
- 
+    def update_ties(self):
+        self.ties += 1
     def analyze_outcome(self):
       percent_won = 0
       if self.wins > 0:
@@ -128,7 +156,13 @@ class Nice():
          
         return self.wins, percent_won
       
-
+    def reset(self):
+        self.wins = 0
+        self.ties = 0
+        self.losses = 0
+        self.history = []
+      #   print(self.wins, self.losses, self.history, self.history)
+        return self
 
 class Reverse_Tit_For_Tat():
     def __init__(self, player_id: int) -> None:
@@ -138,6 +172,7 @@ class Reverse_Tit_For_Tat():
       self.player_id = player_id
       self.wins = 0
       self.losses = 0
+      self.ties = 0
       
     def choose_action(self, opponent): #this is the players strategy
        if (len(self.history)  == 0):
@@ -152,7 +187,8 @@ class Reverse_Tit_For_Tat():
    
     def update_losses(self):
         self.losses += 1
- 
+    def update_ties(self):
+        self.ties += 1
     def analyze_outcome(self):
       percent_won = 0
       if self.wins > 0:
@@ -161,7 +197,14 @@ class Reverse_Tit_For_Tat():
         percent_won = 1 - float(self.losses / (self.wins + self.losses))
          
         return self.wins, percent_won
-      
+
+    def reset(self):
+        self.wins = 0
+        self.ties = 0
+        self.losses = 0
+        self.history = []
+      #   print(self.wins, self.losses, self.history, self.history)
+        return self
 
 class Tit_For_Tat():
     def __init__(self, player_id: int) -> None:
@@ -171,6 +214,7 @@ class Tit_For_Tat():
       self.player_id = player_id
       self.wins = 0
       self.losses = 0
+      self.ties = 0
       
     def choose_action(self, opponent): #this is the players strategy
        if (len(self.history)  == 0):
@@ -185,7 +229,8 @@ class Tit_For_Tat():
    
     def update_losses(self):
         self.losses += 1
- 
+    def update_ties(self):
+        self.ties += 1
     def analyze_outcome(self):
       percent_won = 0
       if self.wins > 0:
@@ -194,3 +239,11 @@ class Tit_For_Tat():
         percent_won = 1 - float(self.losses / (self.wins + self.losses))
          
         return self.wins, percent_won
+      
+    def reset(self):
+        self.wins = 0
+        self.ties = 0
+        self.losses = 0
+        self.history = []
+      #   print(self.wins, self.losses, self.history, self.history)
+        return self
