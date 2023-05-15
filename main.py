@@ -11,8 +11,8 @@ from blind_agent import *
 opponents = 6 # How many instances of each defined strategy there are
 # episode_length =  # How many turns to play
 # ε = 0.1 # the probability that we make moves based on past knowledge or just make random moves --> we want it to approach 0 as more rounds are played
-training_games = 100  # How long to train in seconds per agent
-turns = 3
+training_games = 200  # How long to train in seconds per agent
+turns = 4
 games = 10 # How many episodes to play during the testing phase
 
 
@@ -27,7 +27,8 @@ def train_player(blind_player, training_games: int, turns: int):
    ties = 0
    defined_players = [Grim_Trigger(1), Hard_Majority(2), Mean(3), Nice(4), Reverse_Tit_For_Tat(5), Tit_For_Tat(6)]
    player_1 = blind_player
-   for player in defined_players[:1]:
+   for player in defined_players:
+      
       player_2 = player
       for i in range(training_games):
          # print(player_2.name)
@@ -35,7 +36,7 @@ def train_player(blind_player, training_games: int, turns: int):
          payoff_2 = []
          # print(i*turns)
          # player_1.round = i*turns
-         print('line 39', player_1.Q)
+         # print('line 39', player_1.Q)
          for j in range(turns):
             
             # print(payoff_1, payoff_2)
@@ -66,8 +67,10 @@ def train_player(blind_player, training_games: int, turns: int):
                payoff_1.append(payoff_matrix[3][0])
                payoff_2.append(payoff_matrix[3][1])
             round = j
-            # player_1.action_payoff(round, action_1, payoff_1[-1])
+            player_1.action_payoff(player_2, round, action_1, payoff_1[-1])
+            
          # print(player_1.Q)
+         # print(player_1.history, player_2.history)
          # print(payoff_1, len(payoff_1), sum(payoff_1), sum(payoff_2))
          total_player1_payoff = sum(payoff_1)
          total_player2_payoff = sum(payoff_2)
@@ -78,7 +81,7 @@ def train_player(blind_player, training_games: int, turns: int):
             for j in range(turns):
                # round = j + (i*turns)
                action_1 = player_1.history[j]
-               player_1.action_payoff(round, action_1, avg_action_payoff)
+               player_1.action_payoff(player_2, round, action_1,  avg_action_payoff)
                
                player_1.update_wins()
                player_2.update_losses()
@@ -87,11 +90,13 @@ def train_player(blind_player, training_games: int, turns: int):
             for j in range(turns):
                player_2.update_wins()
                player_1.update_losses()
-            print(player_1.analyze_outcome(player_2), player_2.wins)
+            # print(player_1.analyze_outcome(player_2), player_2.wins)
          if total_player1_payoff == total_player2_payoff:
             for j in range(turns):
                player_2.update_ties()
                player_1.update_ties()
+         # print(player_1.history, player_2.history)
+         player_1.analyze_outcome(player_2)
          # # break
          # print(len(payoff_1))
          # player_1.round -= 1
@@ -100,18 +105,11 @@ def train_player(blind_player, training_games: int, turns: int):
         
          # player_1.reset()
          
-         print(player_1.history)
-         print(player_2.history)
-         player_2.wins = 0
-         
-         player_2.losses = 0
-         player_1.wins = 0
-         player_1.ties = 0
-         
-         player_1.losses = 0
-         player_2.ties = 0
-         player_2.history = []
-         player_1.history = []
+         # print(player_1.history)
+         # print(player_2.history)
+         player_1.reset()
+         player_2.reset()
+         # break
       # print(player_1.Q)
       # break
       # print(player_1.Q)
@@ -121,12 +119,16 @@ def train_player(blind_player, training_games: int, turns: int):
 # train_player(Blind(0),training_games, turns)
 
 def play_games(blind_player, games, turns):
-   player_1_wins = 0
-   player_2_wins = 0
-   ties = 0
+   game_outcomes = {"Grim Trigger": {'wins': 0, 'losses': 0, 'ties': 0}, "Hard Majority": {'wins': 0, 'losses': 0, 'ties': 0}, 'Mean': {'wins': 0, 'losses': 0, 'ties': 0}, 'Nice': {'wins': 0, 'losses': 0, 'ties': 0}, "Reverse Tit For Tat": {'wins': 0, 'losses': 0, 'ties': 0}, "Tit For Tat": {'wins': 0, 'losses': 0, 'ties': 0} }
+   print(blind_player.Q, '\n\n')
+   
+   
    defined_players = [Grim_Trigger(1), Hard_Majority(2), Mean(3), Nice(4), Reverse_Tit_For_Tat(5), Tit_For_Tat(6)]
    player_1 = blind_player
-   for player in defined_players[-1:]:
+   for player in defined_players:
+      player_1_wins = 0
+      player_2_wins = 0
+      ties = 0
       player_2 = player
       for i in range(games):
          payoff_1 = []
@@ -163,22 +165,43 @@ def play_games(blind_player, games, turns):
                payoff_1.append(payoff_matrix[3][0])
                payoff_2.append(payoff_matrix[3][1])
             round = j 
-            player_1.action_payoff(round, action_1, payoff_1[-1])
+            # player_1.action_payoff(player_2, round, action_1, payoff_1[-1])
       
          total_player1_payoff = sum(payoff_1)
          total_player2_payoff = sum(payoff_2)
          # print(total_player1_payoff, total_player2_payoff)
          if total_player1_payoff > total_player2_payoff:
             player_1_wins += 1
+            # print(player_1.history, player_1_wins)
             # print(player_1_wins)
          elif total_player1_payoff < total_player2_payoff:
             player_2_wins += 1
          else:
             ties += 1
+            print('TIE', player_1.history)
+         player_1.reset()
+         player_2.reset()
+         # print()
       # break
-   return player_1_wins, player_2_wins, ties
+      game_outcomes[player_2.name]['wins'] = player_1_wins
+      game_outcomes[player_2.name]['losses'] = player_2_wins
+      game_outcomes[player_2.name]['ties'] = ties
+   # return player_1_wins, player_2_wins, ties
+   return game_outcomes
 
 
 blind_player = train_player(Blind(0),training_games, turns)
-# print(play_games(blind_player.reset(), games, turns))
+pregame = blind_player.Q
+# for name in blind_player.analysis:
+#    print(len(blind_player.analysis[name]))
+# print(blind_player.Q, '\n\n')
+# print(blind_player.analysis)
+# for opp in blind_player.analysis:
+#    for state in blind_player.analysis[opp]:
+#    # if blind_player.analysis["Tit For Tat"][state][1] == 1.0:
+#       print(state, blind_player.analysis[opp][state], '\n')
+# print(blind_player.analysis)
+print(play_games(blind_player.reset(), games, turns))
+print(blind_player.Q == pregame, '\n\n')
+# print(blind_player.analysis)
 # print(play_games(blind_player, games, turns))
