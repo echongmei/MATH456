@@ -64,8 +64,8 @@ def train_player(blind_player, training_games: int, turns: int): # traing the bl
             player_1.action_payoff(player_2, round, action_1, payoff_1[-1])
 
          # UNCOMMENT IF YOU WANT TO COLLECT Q-VALUES
-         values = player_1.Q.copy()
-         table = create_table(table, i, player_1, player_2, values)
+         # values = player_1.Q.copy()
+         # table = create_table(table, i, player_1, player_2, values)
 
          total_player1_payoff = sum(payoff_1)
          total_player2_payoff = sum(payoff_2)
@@ -90,8 +90,8 @@ def train_player(blind_player, training_games: int, turns: int): # traing the bl
          player_1.reset()
          player_2.reset()
 
-   return player_1, table # UNCOMMENT IF YOU WANT TO COLLECT Q-VALUES
-   # return player_1
+   # return player_1, table # UNCOMMENT IF YOU WANT TO COLLECT Q-VALUES
+   return player_1
    
 
 def play_games(blind_player, games, turns): # these are the testing games
@@ -163,9 +163,8 @@ def play_games(blind_player, games, turns): # these are the testing games
 # table: the table of Q-values
 # game_outcomes: the game_outcomes of the testing games
 
-# blind_player = train_player(Blind(0), training_games, turns)
+blind_player = train_player(Blind(0), training_games, turns)
 # # UNCOMMENT IF YOU WANT TO COLLECT Q-VALUES
-blind_player, table = train_player(Blind(0),training_games, turns) 
+# blind_player, table = train_player(Blind(0),training_games, turns) 
 
 game_outcomes = play_games(blind_player.reset(), games, turns)
-print(game_outcomes)
