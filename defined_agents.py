@@ -41,7 +41,6 @@ class Grim_Trigger():
         self.ties = 0
         self.losses = 0
         self.history = []
-      #   print(self.wins, self.losses, self.history, self.history)
         return self
 
 
@@ -58,7 +57,6 @@ class Hard_Majority():
     def choose_action(self, opponent): #this is the players strategy
        opponent_cooperations = len(list(filter(lambda move: move == 0, opponent.history)))
        opponent_defections = len(opponent.history) - opponent_cooperations
-      #  print('cooperations = {}  defections {}'.format(opponent_cooperations, opponent_defections))
        if (len(self.history)  == 0):
           return 1
        elif opponent_defections >= opponent_cooperations:
@@ -87,7 +85,6 @@ class Hard_Majority():
         self.ties = 0
         self.losses = 0
         self.history = []
-      #   print(self.wins, self.losses, self.history, self.history)
         return self
 
 class Mean():
@@ -124,7 +121,6 @@ class Mean():
         self.ties = 0
         self.losses = 0
         self.history = []
-      #   print(self.wins, self.losses, self.history, self.history)
         return self
 
 class Nice():
@@ -161,7 +157,6 @@ class Nice():
         self.ties = 0
         self.losses = 0
         self.history = []
-      #   print(self.wins, self.losses, self.history, self.history)
         return self
 
 class Reverse_Tit_For_Tat():
@@ -203,7 +198,6 @@ class Reverse_Tit_For_Tat():
         self.ties = 0
         self.losses = 0
         self.history = []
-      #   print(self.wins, self.losses, self.history, self.history)
         return self
 
 class Tit_For_Tat():
@@ -219,8 +213,6 @@ class Tit_For_Tat():
     def choose_action(self, opponent): #this is the players strategy
        if (len(self.history)  == 0):
           return 0
-      #  elif opponent.history[-1] == 1:
-      #     return 0
        else:
           return opponent.history[-1]
        
@@ -245,5 +237,4 @@ class Tit_For_Tat():
         self.ties = 0
         self.losses = 0
         self.history = []
-      #   print(self.wins, self.losses, self.history, self.history)
         return self
